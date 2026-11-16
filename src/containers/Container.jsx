@@ -10,23 +10,28 @@ export default class Container extends PureComponent {
     super(props)
 
     this.state = {
-      toggle1State: 'none',
-      toggle2State: 'none',
-      loginForm: {
-        email: '',
-        password: '',
-        buttonDisabled: true
-      },
-      synthVolume: {
-        name: 'synthVolume',
-        active: false,
-        position: [0, 0]
-      },
-      effectWet: {
-        name: 'effectWet',
-        active: false,
-        position: [100, 100]
-      }
+      effects: [
+        {
+          name: 'synthVolume',
+          active: false,
+          position: [0, 0]
+        },
+        {
+          name: 'effectWet',
+          active: false,
+          position: [100, 100]
+        },
+        {
+          name: 'something',
+          active: false,
+          position: [50, 50]
+        },
+        {
+          name: 'something2',
+          active: false,
+          position: [10, 90]
+        }
+      ]
     }
   }
 
@@ -37,136 +42,77 @@ export default class Container extends PureComponent {
   }
 
   handleSurfaceActive = (name) => {
-    const surfaceData = Object.assign({}, this.state[name], { active: true })
+    const effects = structuredClone(this.state.effects)
+
+    effects.forEach((effect) => {
+      if (effect.name == name) {
+        effect.active = true
+      }
+    })
 
     this.setState({
-      [`${name}`]: surfaceData
+      effects
     })
   }
 
   handleSurfacesInactive = () => {
-    const synthVolume = Object.assign({}, this.state.synthVolume, {
-      active: false
+    const effects = structuredClone(this.state.effects)
+
+    effects.forEach((effect) => {
+      effect.active = false
     })
 
-    const effectWet = Object.assign({}, this.state.effectWet, { active: false })
-
     this.setState({
-      synthVolume,
-      effectWet
+      effects
     })
   }
 
   handleSurfaceValueChange = (name, position) => {
-    const surfaceData = Object.assign({}, this.state[name], {
-      position: position
+    const effects = structuredClone(this.state.effects)
+
+    effects.forEach((effect) => {
+      if (effect.name == name) {
+        effect.position = position
+      }
     })
 
     this.setState({
-      [`${name}`]: surfaceData
-    })
-  }
-
-  handleClick1 = (value) => {
-    this.setState({
-      toggle1State: value
-    })
-  }
-
-  handleClick2 = (value) => {
-    this.setState({
-      toggle2State: value
-    })
-  }
-
-  handleChangeEmail = (value) => {
-    const { loginForm } = this.state
-    const nextLoginForm = Object.assign({}, loginForm, { email: value })
-
-    if ((value != '') & (this.state.loginForm.password != '')) {
-      nextLoginForm.buttonDisabled = false
-    } else {
-      nextLoginForm.buttonDisabled = true
-    }
-
-    this.setState({
-      loginForm: nextLoginForm
-    })
-  }
-
-  handleChangePassword = (value) => {
-    const { loginForm } = this.state
-    const nextLoginForm = Object.assign({}, loginForm, { password: value })
-
-    if ((value != '') & (this.state.loginForm.email != '')) {
-      nextLoginForm.buttonDisabled = false
-    } else {
-      nextLoginForm.buttonDisabled = true
-    }
-
-    this.setState({
-      loginForm: nextLoginForm
+      effects
     })
   }
 
   render() {
-    const { toggle1, toggle2 } = this.props
+    const { effects } = this.state
 
-    const { toggle1State, toggle2State, loginForm, synthVolume, effectWet } =
-      this.state
+    const elements = effects.map((effect) => (
+      <Surface
+        key={effect.name}
+        name={effect.name}
+        options={effect}
+        handleSurfaceActive={this.handleSurfaceActive}
+        handleSurfaceValueChange={this.handleSurfaceValueChange}
+      />
+    ))
+
+    // const elements = []
+
+    // effects.forEach((effect) => {
+    //   const { name } = effect
+
+    //   elements.push(
+    //     <Surface
+    //       key={name}
+    //       name={name}
+    //       options={effect}
+    //       handleSurfaceActive={this.handleSurfaceActive}
+    //       handleSurfaceValueChange={this.handleSurfaceValueChange}
+    //     />
+    //   )
+    // })
 
     return (
       <div className="Container">
-        <Button
-          text="Привет"
-          disabled={false}
-          handleClick={() => {
-            console.log('Hi')
-          }}
-        />
-        <br />
-        <Button
-          text="Пока"
-          handleClick={() => {
-            console.log('Bye')
-          }}
-        />
-        <br />
-        <ToggleButtonSet
-          title={toggle1.title}
-          value={toggle1State}
-          options={toggle1.options}
-          handleClick={this.handleClick1}
-        />
-        <br />
-        <ToggleButtonSet
-          title={toggle2.title}
-          value={toggle2State}
-          options={toggle2.options}
-          handleClick={this.handleClick2}
-        />
-        <br />
-        <LoginForm
-          options={loginForm}
-          handleChangeEmail={this.handleChangeEmail}
-          handleChangePassword={this.handleChangePassword}
-        />
-        <br />
-        <section className="EffectsZone">
-          <Surface
-            name="synthVolume"
-            options={synthVolume}
-            handleSurfaceActive={this.handleSurfaceActive}
-            handleSurfaceValueChange={this.handleSurfaceValueChange}
-          />
-
-          <Surface
-            name="effectWet"
-            options={effectWet}
-            handleSurfaceActive={this.handleSurfaceActive}
-            handleSurfaceValueChange={this.handleSurfaceValueChange}
-          />
-        </section>
+        <section className="EffectsZone">{elements}</section>
       </div>
     )
   }
