@@ -4,6 +4,8 @@
 @import 'stylesheets/basics.css';
 @import 'stylesheets/index.css';
 
-@import 'stylesheets/Button.css';
-@import 'stylesheets/ToggleButton.css';
-@import 'stylesheets/ToggleButtonSet.css';
+@import 'components/Button/Button.css';
+@import 'components/ToggleButton/ToggleButton.css';
+@import 'components/ToggleButtonSet/ToggleButtonSet.css';
+@import 'components/Slider/Slider.css';
+@import 'components/Surface/Surface.css';

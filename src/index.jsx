@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import Container from './javascript/Container.jsx'
+import Container from './containers/Container.jsx'
 
 const toggle1 = {
   title: 'Toggle 1',

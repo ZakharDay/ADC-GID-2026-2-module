@@ -1,0 +1,17 @@
+.Surface {
+  position: relative;
+  width: 304px;
+  height: 304px;
+  border: 2px solid black;
+  border-radius: 9px;
+  background-color: var(--dark-grey);
+
+  .thumb {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--dark-green);
+    cursor: pointer;
+  }
+}

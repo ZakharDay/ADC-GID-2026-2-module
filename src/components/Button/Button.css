@@ -14,3 +14,13 @@
   background-color: var(--white);
   filter: brightness(90%);
 }
+
+.Button.disabled {
+  background-color: var(--grey);
+
+  &:hover {
+    background-color: var(--grey);
+    filter: none;
+    cursor: not-allowed;
+  }
+}

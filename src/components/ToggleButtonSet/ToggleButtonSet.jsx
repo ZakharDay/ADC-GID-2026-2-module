@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import ToggleButton from './ToggleButton.jsx'
+import ToggleButton from '../ToggleButton/ToggleButton.jsx'
 
 export default class ToggleButtonSet extends PureComponent {
   constructor(props) {
